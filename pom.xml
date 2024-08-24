@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fingrant</groupId>
-	<artifactId>FinanceMgmtGrant</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>financial-grant-mgmt</artifactId>
+	<version>v0.1</version>
 	<name>FinanceMgmtGrant</name>
 	<description>Financial Management system for Grants</description>
 	<properties>
