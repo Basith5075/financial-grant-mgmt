@@ -37,7 +37,7 @@ pipeline {
        stage('Create Docker image') {
             steps {
                 script {
-                    sh 'docker build -t basith321/financial-grant-mgmt:v0.1 .'
+                    sh 'docker build --platform linux/amd64 -t basith321/financial-grant-mgmt_linux:v0.1 .'
                 }
             }
        }
@@ -45,7 +45,7 @@ pipeline {
        stage('Docker Hub: Image Push') {
                    steps {
                        script {
-                           sh 'docker push basith321/financial-grant-mgmt:v0.1'
+                           sh 'docker push basith321/financial-grant-mgmt_linux:v0.1'
                        }
                    }
         }
