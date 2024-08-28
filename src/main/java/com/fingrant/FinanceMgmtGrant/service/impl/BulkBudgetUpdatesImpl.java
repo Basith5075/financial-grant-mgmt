@@ -81,7 +81,7 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
             logger.info("sendSnsNotification() called with subject{} , and message {}", subject, message);
 
                 SnsClient snsClient = SnsClient.builder().build();
-                String topicArn = "arn:aws:sns:us-east-1:022499031411:mytopic";
+                String topicArn = "arn:aws:sns:us-east-1:851725245212:s3-file-qa-sns";
           return SnsNotificationService(snsClient, topicArn, subject, message);
 
         }catch (Exception e){
@@ -95,6 +95,4 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
 
         return new FileSystemResource(fileName);
     }
-
-
 }
