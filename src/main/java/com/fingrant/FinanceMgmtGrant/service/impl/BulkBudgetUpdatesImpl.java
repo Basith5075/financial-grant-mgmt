@@ -18,25 +18,24 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
     @Autowired
     S3Client s3Client;
 
-    @Override
-    public String getFileFromS3Csv() {
+    private static String content = "This is the content of the file being uploaded to S3.";
 
+    @Override
+    public String getFileFromS3Csv(String bucketName, String objectKey) {
         try {
             logger.info("getBudgetFromS3Csv() called");
 
-            String bucketName = "s3-accountb";
-            String objectName = "sometempfile.txt";
-
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
-                    .key(objectName)
+                    .key(objectKey)
                     .build();
 
-            RequestBody body = RequestBody.fromBytes(getFileSystemResource("/Users/abdulbasithmohammed/Desktop/123.txt").getContentAsByteArray());
+            RequestBody body = RequestBody.fromBytes(content.getBytes());
 
             s3Client.putObject(putObjectRequest, body);
         }catch (Exception e){
             logger.error("Something went wrong {} ", e.getMessage());
+            return "failed to upload file";
         }
 
         logger.info("SuccessFully Inserted the File into S3");

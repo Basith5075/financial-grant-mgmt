@@ -22,7 +22,6 @@ public class BudgetServiceImpl implements BudgetService {
     public Budget createBuget(Budget budget) throws CustomException {
 
         try{
-
             return budgetRepository.save(budget);
 
         }catch(DataIntegrityViolationException ex){

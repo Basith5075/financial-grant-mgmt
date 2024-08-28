@@ -57,7 +57,7 @@ public class BudgetController {
     }
 
     @GetMapping("/s3test")
-    public String testS3(){
-       return bulkBudgetUpdates.getFileFromS3Csv();
+    public String testS3(@RequestParam("bucketName") String bucketName, @RequestParam("objectKey") String objectKey ){
+       return bulkBudgetUpdates.getFileFromS3Csv(bucketName, objectKey );
     }
 }
