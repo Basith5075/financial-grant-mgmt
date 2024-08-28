@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -59,5 +60,14 @@ public class BudgetController {
     @GetMapping("/s3test")
     public String testS3(@RequestParam("bucketName") String bucketName, @RequestParam("objectKey") String objectKey ){
        return bulkBudgetUpdates.getFileFromS3Csv(bucketName, objectKey );
+    }
+
+    @PostMapping("/sendSns")
+    public String sendSns(@RequestBody Map<String, String> payload){
+
+        if (bulkBudgetUpdates.sendSnsNotification(payload.get("subject"), payload.get("message")))
+            return "success";
+        else
+            return "failed to send the message !!";
     }
 }

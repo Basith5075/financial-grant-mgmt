@@ -17,7 +17,7 @@ public class AWSConfiguration {
 
         return S3Client.builder()
                 .credentialsProvider(credentials)
-                .region(Region.US_EAST_2)
+                .region(Region.US_EAST_1)
                 .build();
     }
 }
