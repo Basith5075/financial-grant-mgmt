@@ -2,6 +2,7 @@ package com.fingrant.FinanceMgmtGrant.controller;
 
 import com.fingrant.FinanceMgmtGrant.entity.Budget;
 import com.fingrant.FinanceMgmtGrant.service.BudgetService;
+import com.fingrant.FinanceMgmtGrant.service.BulkBudgetUpdates;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +18,9 @@ public class BudgetController {
 
     @Autowired
     private BudgetService budgetService;
+
+    @Autowired
+    private BulkBudgetUpdates bulkBudgetUpdates;
 
     @PostMapping
     public Budget createBudget(@Valid @RequestBody Budget budget){
@@ -50,5 +54,10 @@ public class BudgetController {
     @DeleteMapping("/{id}")
     public boolean deleteBudget(@PathVariable Long id){
         return budgetService.deleteBudget(id);
+    }
+
+    @GetMapping("/s3test")
+    public String testS3(){
+       return bulkBudgetUpdates.getFileFromS3Csv();
     }
 }
