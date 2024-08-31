@@ -28,7 +28,7 @@ pipeline {
                          mvn clean verify sonar:sonar \
                               -Dsonar.projectKey=financial-grant-mgmt \
                               -Dsonar.projectName='financial-grant-mgmt' \
-                              -Dsonar.host.url=http://127.0.0.1:9000 \
+                              -Dsonar.host.url=http://host.docker.internal:9000 \
                               -Dsonar.token=$SONARQUBE_TOKEN
                               '''
                    }
