@@ -1,0 +1,23 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: FinanceMgmtGrant
+
+  datasource:
+    url: jdbc:postgresql://awspostgres-instance-1.c9ksagio443r.us-east-1.rds.amazonaws.com:5432/postgres
+    username: postgres
+    password: Littlerock321
+    driver-class-name: org.postgresql.Driver
+    test-while-idle: true
+    validation-query: SELECT 1
+    time-between-eviction-runs-millis: 60000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: fin_mgmt
