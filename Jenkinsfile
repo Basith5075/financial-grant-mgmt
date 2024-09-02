@@ -12,13 +12,13 @@ pipeline {
     stages {
         stage('Run Unit Tests'){
             steps{
-                sh 'mvn clean test -Djasypt.encryptor.password=$JASYPT_PWD -DDB_HOST=postgres'
+                sh 'mvn clean test -Djasypt.encryptor.password=$JASYPT_PWD'
             }
         }
 
         stage('Build Java Project') {
              steps {
-                  sh 'mvn clean install -Djasypt.encryptor.password=$JASYPT_PWD -DDB_HOST=postgres'
+                  sh 'mvn clean install -Djasypt.encryptor.password=$JASYPT_PWD'
                   }
         }
 
@@ -32,7 +32,6 @@ pipeline {
                               -Dsonar.host.url=http://host.docker.internal:9000 \
                               -Dsonar.token=$SONARQUBE_TOKEN \
                               -Djasypt.encryptor.password=$JASYPT_PWD \
-                              -DDB_HOST=postgres
                               '''
                    }
          }
