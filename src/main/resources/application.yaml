@@ -5,7 +5,7 @@ spring:
   application:
     name: FinanceMgmtGrant
   datasource:
-    url: jdbc:postgresql://localhost:5432/finmgt
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/finmgt
     username: forest
     password: ENC(FD/vdt4Os8rQ2smS+aShXJEdv+gH0DEWjA2fjDBs4HQ3r+/4M3M4b0hdjayL/eW6)
     driver-class-name: org.postgresql.Driver
