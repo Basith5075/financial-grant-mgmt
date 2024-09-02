@@ -29,7 +29,7 @@ pipeline {
                          mvn clean verify sonar:sonar \
                               -Dsonar.projectKey=financial-grant-mgmt \
                               -Dsonar.projectName='financial-grant-mgmt' \
-                              -Dsonar.host.url=http://host.docker.internal:9000 \
+                              -Dsonar.host.url=http://localhost:9000 \
                               -Dsonar.token=$SONARQUBE_TOKEN \
                               -Djasypt.encryptor.password=$JASYPT_PWD \
                               '''
