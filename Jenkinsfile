@@ -6,6 +6,7 @@ pipeline {
 
      environment {
              SONARQUBE_TOKEN = credentials('sonartoken_finmgmt')
+             JASYPT_PWD =  credentials('jasypt_secret')
      }
 
     stages {
@@ -17,7 +18,7 @@ pipeline {
 
         stage('Build Java Project') {
              steps {
-                  sh 'mvn clean install'
+                  sh 'mvn clean install -Djasypt.encryptor.password=$JASYPT_PWD'
                   }
         }
 
@@ -28,7 +29,7 @@ pipeline {
                          mvn clean verify sonar:sonar \
                               -Dsonar.projectKey=financial-grant-mgmt \
                               -Dsonar.projectName='financial-grant-mgmt' \
-                              -Dsonar.host.url=http://localhost:9000 \
+                              -Dsonar.host.url=http://host.docker.internal:9000 \
                               -Dsonar.token=$SONARQUBE_TOKEN
                               '''
                    }
@@ -37,7 +38,7 @@ pipeline {
        stage('Create Docker image') {
             steps {
                 script {
-                    sh 'docker build --platform linux/amd64 -t basith321/financial-grant-mgmt_linux:v0.1 .'
+                    sh 'docker build -t basith321/financial-grant-mgmt_linux:v0.1 .'
                 }
             }
        }

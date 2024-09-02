@@ -4,16 +4,14 @@ server:
 spring:
   application:
     name: FinanceMgmtGrant
-
   datasource:
-    url: jdbc:postgresql://awspostgres-instance-1.c9ksagio443r.us-east-1.rds.amazonaws.com:5432/postgres
-    username: postgres
-    password: Littlerock321
+    url: jdbc:postgresql://localhost:5432/finmgt
+    username: forest
+    password: ENC(FD/vdt4Os8rQ2smS+aShXJEdv+gH0DEWjA2fjDBs4HQ3r+/4M3M4b0hdjayL/eW6)
     driver-class-name: org.postgresql.Driver
     test-while-idle: true
     validation-query: SELECT 1
     time-between-eviction-runs-millis: 60000
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,3 +19,17 @@ spring:
     properties:
       hibernate:
         default_schema: fin_mgmt
+---
+spring:
+  config:
+    activate:
+      on-profile: jenkins-docker
+
+testing:
+  sonar:
+    url: "host.docker.internal"
+
+---
+spring:
+  profiles:
+    active: jenkins-docker
