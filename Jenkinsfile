@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Run Unit Tests'){
             steps{
-                sh 'mvn clean test'
+                sh 'mvn clean test -Djasypt.encryptor.password=$JASYPT_PWD'
             }
         }
 
@@ -30,7 +30,8 @@ pipeline {
                               -Dsonar.projectKey=financial-grant-mgmt \
                               -Dsonar.projectName='financial-grant-mgmt' \
                               -Dsonar.host.url=http://host.docker.internal:9000 \
-                              -Dsonar.token=$SONARQUBE_TOKEN
+                              -Dsonar.token=$SONARQUBE_TOKEN \
+                              -Djasypt.encryptor.password=$JASYPT_PWD
                               '''
                    }
          }
