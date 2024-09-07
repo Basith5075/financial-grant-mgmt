@@ -1,12 +1,17 @@
 package com.fingrant.FinanceMgmtGrant.service.impl;
 
+import com.fingrant.FinanceMgmtGrant.app.AWSConfiguration;
 import com.fingrant.FinanceMgmtGrant.service.BulkBudgetUpdates;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.sns.SnsClient;
@@ -20,18 +25,22 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
     private static final Logger logger = LogManager.getLogger(BulkBudgetUpdatesImpl.class);
 
     @Autowired
-    private S3Client s3Client;
+    private ObjectFactory<S3Client> s3ClientFactory ;
 
+    @Autowired
+    private ApplicationContext context;
 
     private SnsClient snsClient;
 
     private static String content = "This is the content of the file being uploaded to S3.";
 
     @Override
-    public String getFileFromS3Csv(String bucketName, String objectKey) {
+    public String uploadFileToS3Csv(String bucketName, String objectKey, String region) {
         try {
             logger.info("getBudgetFromS3Csv() called");
-
+            if("US_EAST_2".equals(region))
+                AWSConfiguration.setReg(Region.US_EAST_2);
+            S3Client s3Client = s3ClientFactory.getObject();
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(objectKey)
@@ -40,6 +49,9 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
             RequestBody body = RequestBody.fromBytes(content.getBytes());
 
             s3Client.putObject(putObjectRequest, body);
+
+            ((ConfigurableApplicationContext) context).getBeanFactory().destroyBean(s3Client);
+
         }catch (Exception e){
             logger.error("Something went wrong {} ", e.getMessage());
             return "failed to upload file";

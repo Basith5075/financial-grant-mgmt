@@ -2,7 +2,7 @@ package com.fingrant.FinanceMgmtGrant.service;
 
 public interface BulkBudgetUpdates {
 
-    String getFileFromS3Csv(String bucketName, String objectKey);
+    String uploadFileToS3Csv(String bucketName, String objectKey, String region);
 
     boolean sendSnsNotification(String subject, String message);
 

@@ -20,9 +20,6 @@ public class BudgetController {
     @Autowired
     private BudgetService budgetService;
 
-    @Autowired
-    private BulkBudgetUpdates bulkBudgetUpdates;
-
     @PostMapping
     public Budget createBudget(@Valid @RequestBody Budget budget){
 
@@ -57,17 +54,5 @@ public class BudgetController {
         return budgetService.deleteBudget(id);
     }
 
-    @GetMapping("/s3test")
-    public String testS3(@RequestParam("bucketName") String bucketName, @RequestParam("objectKey") String objectKey ){
-       return bulkBudgetUpdates.getFileFromS3Csv(bucketName, objectKey );
-    }
 
-    @PostMapping("/sendSns")
-    public String sendSns(@RequestBody Map<String, String> payload){
-
-        if (bulkBudgetUpdates.sendSnsNotification(payload.get("subject"), payload.get("message")))
-            return "success";
-        else
-            return "failed to send the message !!";
-    }
 }
