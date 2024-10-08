@@ -50,7 +50,7 @@ public class BudgetServiceImpl implements BudgetService {
        Budget budget = budgetRepository.findBudgetByName(name);
 
        if(budget != null) {
-           return budgetRepository.findBudgetByName(name);
+           return budget;
        }else{
            throw new CustomException("Budget Not Present","E404");
        }
