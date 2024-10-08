@@ -15,13 +15,16 @@ import java.util.List;
 public class BudgetController {
 
 
-    @Autowired
-    private BudgetService budgetService;
+    private final BudgetService budgetService;
+
+    public BudgetController(BudgetService budgetService) {
+        this.budgetService = budgetService;
+    }
 
     @PostMapping
     public Budget createBudget(@Valid @RequestBody Budget budget){
 
-        return budgetService.createBuget(budget);
+        return budgetService.createBudget(budget);
     }
 
     @GetMapping

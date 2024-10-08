@@ -18,11 +18,14 @@ public class ExpenseEstimatorServiceImpl implements ExpenseEstimatorService {
 
     private final Logger LOGGER = LogManager.getLogger(ExpenseEstimatorServiceImpl.class);
 
-    @Autowired
-    private GaEstimationBreakUpEntityRepository estimationBreakUpEntityRepository;
+    private final GaEstimationBreakUpEntityRepository estimationBreakUpEntityRepository;
 
-    @Autowired
-    private FullTimeEstimationBreakUpEntityRepository fullTimeEstimationBreakUpEntityRepository;
+    private final FullTimeEstimationBreakUpEntityRepository fullTimeEstimationBreakUpEntityRepository;
+
+    public ExpenseEstimatorServiceImpl(GaEstimationBreakUpEntityRepository estimationBreakUpEntityRepository, FullTimeEstimationBreakUpEntityRepository fullTimeEstimationBreakUpEntityRepository) {
+        this.estimationBreakUpEntityRepository = estimationBreakUpEntityRepository;
+        this.fullTimeEstimationBreakUpEntityRepository = fullTimeEstimationBreakUpEntityRepository;
+    }
 
     @Override
     public GaEstimationBreakUpEntity saveGaExpenseEstimator(String gaType, String studentId, String semester, String savingEmployee) {

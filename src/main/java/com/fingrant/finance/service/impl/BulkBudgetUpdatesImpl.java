@@ -5,7 +5,6 @@ import com.fingrant.finance.service.BulkBudgetUpdates;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.FileSystemResource;
@@ -24,15 +23,18 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
 
     private static final Logger logger = LogManager.getLogger(BulkBudgetUpdatesImpl.class);
 
-    @Autowired
-    private ObjectFactory<S3Client> s3ClientFactory ;
+    private final ObjectFactory<S3Client> s3ClientFactory ;
 
-    @Autowired
-    private ApplicationContext context;
+    private final ApplicationContext context;
 
     private SnsClient snsClient;
 
     private static String content = "This is the content of the file being uploaded to S3.";
+
+    public BulkBudgetUpdatesImpl(ObjectFactory<S3Client> s3ClientFactory, ApplicationContext context) {
+        this.s3ClientFactory = s3ClientFactory;
+        this.context = context;
+    }
 
     @Override
     public String uploadFileToS3Csv(String bucketName, String objectKey, String region) {
@@ -62,7 +64,7 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
         return "successfully inserted the file !!";
     }
 
-    private boolean SnsNotificationService(SnsClient snsClient, String topicArn, String subject, String message){
+    private boolean snsNotificationService(SnsClient snsClient, String topicArn, String subject, String message){
 
         try {
             logger.info("SnsNotificationService() called with snsclient: {}, topicArn: {}, subject: {}, message: {}", snsClient, topicArn, subject, message);
@@ -94,7 +96,7 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
 
                 SnsClient snsClient = SnsClient.builder().build();
                 String topicArn = "arn:aws:sns:us-east-1:851725245212:s3-file-qa-sns";
-          return SnsNotificationService(snsClient, topicArn, subject, message);
+          return snsNotificationService(snsClient, topicArn, subject, message);
 
         }catch (Exception e){
             logger.error("Issue in sending sns notification {} ", e.getMessage());

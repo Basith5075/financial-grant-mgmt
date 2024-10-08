@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/estimate")
 public class ExpenseEstimatorController {
 
-    @Autowired
-    private ExpenseEstimatorService expenseEstimatorService;
+    private final ExpenseEstimatorService expenseEstimatorService;
 
     private static final Logger logger = LogManager.getLogger(ExpenseEstimatorController.class);
+
+    public ExpenseEstimatorController(ExpenseEstimatorService expenseEstimatorService) {
+        this.expenseEstimatorService = expenseEstimatorService;
+    }
 
     @GetMapping("/ga")
     public ResponseEntity<GaEstimationBreakUpEntity> estimateGaCost(@RequestParam("ga-type") String gaType,

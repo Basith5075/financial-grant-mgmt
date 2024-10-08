@@ -9,8 +9,12 @@ import java.util.Map;
 @RestController
 public class AWSController {
 
+    private final BulkBudgetUpdates bulkBudgetUpdates;
+
     @Autowired
-    private BulkBudgetUpdates bulkBudgetUpdates;
+    public AWSController(BulkBudgetUpdates bulkBudgetUpdates){
+        this.bulkBudgetUpdates = bulkBudgetUpdates;
+    }
 
     @GetMapping("/uploadFile")
     public String uploadFileToS3(@RequestParam("bucketName") String bucketName, @RequestParam("objectKey") String objectKey, @RequestParam("region") String region ){

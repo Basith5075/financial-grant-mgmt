@@ -15,18 +15,21 @@ import java.util.Optional;
 public class BudgetServiceImpl implements BudgetService {
 
 
-    @Autowired
-    private BudgetRepository budgetRepository;
+    private final BudgetRepository budgetRepository;
+
+    public BudgetServiceImpl(BudgetRepository budgetRepository) {
+        this.budgetRepository = budgetRepository;
+    }
 
     @Override
-    public Budget createBuget(Budget budget) throws CustomException {
+    public Budget createBudget(Budget budget) throws CustomException {
 
         try{
             return budgetRepository.save(budget);
 
         }catch(DataIntegrityViolationException ex){
 
-            throw new CustomException("E101","Duplicate Budget Name, please use another name");
+            throw new CustomException("Duplicate Budget Name, please use another name","E101");
         }
     }
 

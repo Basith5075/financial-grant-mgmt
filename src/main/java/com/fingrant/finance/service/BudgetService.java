@@ -6,7 +6,7 @@ import com.fingrant.finance.exception.CustomException;
 import java.util.List;
 
 public interface BudgetService {
-    Budget createBuget(Budget budget) throws CustomException;
+    Budget createBudget(Budget budget) throws CustomException;
     Budget getBudgetById(Long id);
 
     List<Budget> getAllBudgets();
