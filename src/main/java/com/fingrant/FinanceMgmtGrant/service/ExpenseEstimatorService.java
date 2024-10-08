@@ -1,9 +1,11 @@
 package com.fingrant.FinanceMgmtGrant.service;
 
-import com.fingrant.FinanceMgmtGrant.controller.ExpenseEstimator;
-import com.fingrant.FinanceMgmtGrant.entity.EstimationBreakUpEntity;
+import com.fingrant.FinanceMgmtGrant.entity.FullTimeEstimationBreakUpEntity;
+import com.fingrant.FinanceMgmtGrant.entity.GaEstimationBreakUpEntity;
 
 public interface ExpenseEstimatorService {
 
-    EstimationBreakUpEntity saveExpenseEstimator(String gaType, String studentId, String semester, String savingEmployee);
+    GaEstimationBreakUpEntity saveGaExpenseEstimator(String gaType, String studentId, String semester, String savingEmployee);
+
+    FullTimeEstimationBreakUpEntity saveFullTimeRoleEstimator(String role, int durationInMonths , double bonus, double interviewScore, String savingEmployeeRole);
 }

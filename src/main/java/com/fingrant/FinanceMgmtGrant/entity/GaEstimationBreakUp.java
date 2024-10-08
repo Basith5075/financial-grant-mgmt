@@ -1,11 +1,11 @@
 package com.fingrant.FinanceMgmtGrant.entity;
 
-import lombok.Data;
+public enum GaEstimationBreakUp {
 
-public enum EstimationBreakUp {
-
-    HALF_FALL_2024(1L, 10000.0, 300.0, 1500.0, 200.0, 16, "Fall 2024"),
-    HALF_SPRING_2025(2L, 9500.0, 290.0, 1400.0, 180.0, 16, "Spring 2025");
+    HALF_FALL_2024(1L, 3500.0, 1555.0, 750.0, 200.0, 16, "Fall 2024",250),
+    FULL_FALL_2024(3L, 3500.0, 3210.0, 1500.0, 400.0, 16, "Fall 2024",500),
+    HALF_SPRING_2025(2L, 3500.0, 1555.0, 750.0, 200.0, 16, "Fall 2024",250),
+    FULL_SPRING_2024(4L, 3500.0, 3210.0, 1500.0, 400.0, 16, "Fall 2024",500);
 
     private Long id;
     private double tuitionFee;
@@ -14,8 +14,9 @@ public enum EstimationBreakUp {
     private double insurance;
     private int numberOfWeeks;
     private String semesterName;
+    private double miscellaneous;
 
-    EstimationBreakUp(Long id, double tuitionFee, double creditFee, double biWeeklyWages, double insurance, int numberOfWeeks, String semesterName) {
+    GaEstimationBreakUp(Long id, double tuitionFee, double creditFee, double biWeeklyWages, double insurance, int numberOfWeeks, String semesterName, double miscellaneous) {
         this.id = id;
         this.tuitionFee = tuitionFee;
         this.creditFee = creditFee;
@@ -23,6 +24,7 @@ public enum EstimationBreakUp {
         this.insurance = insurance;
         this.numberOfWeeks = numberOfWeeks;
         this.semesterName = semesterName;
+        this.miscellaneous = miscellaneous;
     }
 
     public Long getId() {
@@ -79,5 +81,13 @@ public enum EstimationBreakUp {
 
     public void setSemesterName(String semesterName) {
         this.semesterName = semesterName;
+    }
+
+    public double getMiscellaneous() {
+        return miscellaneous;
+    }
+
+    public void setMiscellaneous(double miscellaneous) {
+        this.miscellaneous = miscellaneous;
     }
 }
