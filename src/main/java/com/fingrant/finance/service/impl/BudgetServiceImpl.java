@@ -1,10 +1,9 @@
 package com.fingrant.finance.service.impl;
 
 import com.fingrant.finance.entity.Budget;
+import com.fingrant.finance.exception.CustomException;
 import com.fingrant.finance.repository.BudgetRepository;
 import com.fingrant.finance.service.BudgetService;
-import com.fingrant.finance.exception.CustomException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
