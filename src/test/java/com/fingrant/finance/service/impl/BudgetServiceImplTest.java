@@ -3,6 +3,7 @@ package com.fingrant.finance.service.impl;
 import com.fingrant.finance.entity.Budget;
 import com.fingrant.finance.exception.CustomException;
 import com.fingrant.finance.repository.BudgetRepository;
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -82,12 +84,12 @@ class BudgetServiceImplTest {
 
         // Given -- Already defined in Before method
         // When
-        Mockito.when(budgetRepository.save(budget)).thenReturn(budget);
+        Mockito.when(budgetRepository.save(any(Budget.class))).thenReturn(budget);
         // then
         Budget actualBudget = budgetService.createBudget(budget);
         assertThat(actualBudget.getName()).isEqualTo(budget.getName());
         assertThat(actualBudget.getEndDate()).isEqualTo(budget.getEndDate());
-        verify(budgetRepository,times(1)).save(budget);
+        verify(budgetRepository,times(1)).save(any(Budget.class));
     }
 
     @Test
@@ -95,13 +97,13 @@ class BudgetServiceImplTest {
 
         // Given -- Already defined in Before method
         // When
-        Mockito.when(budgetRepository.save(budget)).thenThrow(DataIntegrityViolationException.class);
+        Mockito.when(budgetRepository.save(any(Budget.class))).thenThrow(DataIntegrityViolationException.class);
         // then
         CustomException customException = assertThrows(CustomException.class, () -> budgetService.createBudget(budget));
 
         assertThat(customException.getMessage()).isEqualTo("Duplicate Budget Name, please use another name");
         assertThat(customException.getErrorCode()).isEqualTo("E101");
-        verify(budgetRepository,times(1)).save(budget);
+        verify(budgetRepository,times(1)).save(any(Budget.class));
 
     }
 
@@ -190,6 +192,47 @@ class BudgetServiceImplTest {
         CustomException customException = assertThrows(CustomException.class, () -> budgetService.deleteBudget(1L));
         assertThat(customException.getErrorCode()).isEqualTo("E404");
         assertThat(customException.getMessage()).isEqualTo("Budget Not Present");
+        verify(budgetRepository,times(1)).findById(1L);
+    }
+
+
+    @Test
+    void updateBudget() throws InvocationTargetException, IllegalAccessException {
+        //When -- Already defined in before method
+
+        Budget updatedBudget = new Budget();
+
+        BeanUtils.copyProperties(updatedBudget,budget1);
+
+        updatedBudget.setId(1L);
+
+        when(budgetRepository.findById(1L)).thenReturn(Optional.of(budget));
+        when(budgetRepository.save(updatedBudget)).thenReturn(updatedBudget);
+
+        Budget actualBudget = budgetService.updateBudget(1L, updatedBudget);
+        assertThat(actualBudget.getName()).isEqualTo(updatedBudget.getName());
+        verify(budgetRepository,times(1)).findById(1L);
+        verify(budgetRepository,times(1)).save(updatedBudget);
+
+    }
+
+    @Test
+    void updateBudgetFailed() throws InvocationTargetException, IllegalAccessException {
+        //When -- Already defined in before method
+
+        Budget updatedBudget = new Budget();
+
+        BeanUtils.copyProperties(updatedBudget,budget1);
+
+        updatedBudget.setId(1L);
+
+        when(budgetRepository.findById(1L)).thenReturn(Optional.empty());
+
+        CustomException customException = assertThrows(CustomException.class, () -> budgetService.updateBudget(1L, updatedBudget));
+
+        assertThat(customException.getMessage()).isEqualTo("Budget Not Present");
+        assertThat(customException.getErrorCode()).isEqualTo("E404");
+
         verify(budgetRepository,times(1)).findById(1L);
     }
 }

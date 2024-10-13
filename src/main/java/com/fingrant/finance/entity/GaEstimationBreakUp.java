@@ -2,10 +2,10 @@ package com.fingrant.finance.entity;
 
 public enum GaEstimationBreakUp {
 
-    HALF_FALL_2024(1L, 3500.0, 1555.0, 750.0, 200.0, 16, "Fall 2024",250),
-    FULL_FALL_2024(3L, 3500.0, 3210.0, 1500.0, 400.0, 16, "Fall 2024",500),
-    HALF_SPRING_2025(2L, 3500.0, 1555.0, 750.0, 200.0, 16, "Fall 2024",250),
-    FULL_SPRING_2024(4L, 3500.0, 3210.0, 1500.0, 400.0, 16, "Fall 2024",500);
+    HALF_FALL_2024(1L, 3500.0, 1555.0, 750.0, 200.0, 16, "HALF_FALL_2024",250),
+    FULL_FALL_2024(3L, 3500.0, 3210.0, 1500.0, 400.0, 16, "FULL_FALL_2024",500),
+    HALF_SPRING_2025(2L, 3500.0, 1555.0, 750.0, 200.0, 16, "HALF_SPRING_2025",250),
+    FULL_SPRING_2024(4L, 3500.0, 3210.0, 1500.0, 400.0, 16, "FULL_SPRING_2024",500);
 
     private Long id;
     private double tuitionFee;

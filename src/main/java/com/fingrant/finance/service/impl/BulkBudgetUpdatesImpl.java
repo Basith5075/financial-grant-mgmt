@@ -1,6 +1,7 @@
 package com.fingrant.finance.service.impl;
 
 import com.fingrant.finance.app.AWSConfiguration;
+import com.fingrant.finance.exception.CustomException;
 import com.fingrant.finance.service.BulkBudgetUpdates;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,7 +57,8 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
 
         }catch (Exception e){
             logger.error("Something went wrong {} ", e.getMessage());
-            return "failed to upload file";
+
+            throw new CustomException("Failed to upload file! ", "F101" );
         }
 
         logger.info("SuccessFully Inserted the File into S3");

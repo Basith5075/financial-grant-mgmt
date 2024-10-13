@@ -8,10 +8,10 @@ import com.fingrant.finance.service.ExpenseEstimatorService;
 import com.fingrant.finance.util.Util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Service
 public class ExpenseEstimatorServiceImpl implements ExpenseEstimatorService {
@@ -49,7 +49,7 @@ public class ExpenseEstimatorServiceImpl implements ExpenseEstimatorService {
             estimationBreakUpEntity.setTuitionFee(estimationBreakUp.getTuitionFee());
             estimationBreakUpEntity.setInsurance(estimationBreakUp.getInsurance());
             estimationBreakUpEntity.setBiWeeklyWages(estimationBreakUp.getBiWeeklyWages());
-            estimationBreakUpEntity.setGaTypeSemesterName(gaType + "_" +estimationBreakUp.getSemesterName());
+            estimationBreakUpEntity.setGaTypeSemesterName(semesterName);
             estimationBreakUpEntity.setStudentId(tokenizedStudentId);
             estimationBreakUpEntity.setNumberOfWeeks(estimationBreakUp.getNumberOfWeeks());
             estimationBreakUpEntity.setSavedDate(LocalDate.now());
@@ -59,11 +59,10 @@ public class ExpenseEstimatorServiceImpl implements ExpenseEstimatorService {
 
             LOGGER.info("Saving estimation break up: " + estimationBreakUpEntity);
 
-            estimationBreakUpEntityRepository.save(estimationBreakUpEntity);
+            return estimationBreakUpEntityRepository.save(estimationBreakUpEntity);
 
-            return estimationBreakUpEntity;
-        }catch (IllegalArgumentException e) {
-            throw new CustomException("Please Provide a valid Semester name and Gatype, some valid values include: " + GaEstimationBreakUp.values(), e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new CustomException("Please Provide a valid Semester name and Gatype, some valid values include: " + Arrays.toString(GaEstimationBreakUp.values()), "E204");
         }
     }
 
@@ -72,17 +71,17 @@ public class ExpenseEstimatorServiceImpl implements ExpenseEstimatorService {
 
         LOGGER.info("fullTimeRoleEstimator method called by Saving Employee Role : {}, duration in months {}, bonus {}, interviewScore {}, actualEmployee Role {}", savingEmployeeRole, durationInMonths, bonus, interviewScore, role);
 
-        if(!validateSavingEmployeeRole(savingEmployeeRole)){
-            throw new CustomException("You are not authorized to perform this action. Please contact your system administrator.","E321");
+        if (!validateSavingEmployeeRole(savingEmployeeRole)) {
+            throw new CustomException("You are not authorized to perform this action. Please contact your system administrator.", "E321");
         }
 
         try {
 
-            if(fullTimeEstimationBreakUpEntityRepository.existsByRoleNameAndDurationInMonths(role, durationInMonths)){
-                return  fullTimeEstimationBreakUpEntityRepository.findByRoleNameAndDurationInMonths(role,durationInMonths).get();
-            }
-
             FullTimeEstimationBreakUp fullTimeEstimationBreakUp = FullTimeEstimationBreakUp.valueOf(role);
+
+            if (fullTimeEstimationBreakUpEntityRepository.existsByRoleNameAndDurationInMonths(role, durationInMonths)) {
+                return fullTimeEstimationBreakUpEntityRepository.findByRoleNameAndDurationInMonths(role, durationInMonths).get();
+            }
 
             FullTimeEstimationBreakUpEntity fullTimeEstimationBreakUpEntity = new FullTimeEstimationBreakUpEntity();
 
@@ -104,8 +103,8 @@ public class ExpenseEstimatorServiceImpl implements ExpenseEstimatorService {
 
             return fullTimeEstimationBreakUpEntityRepository.save(fullTimeEstimationBreakUpEntity);
 
-        }catch(IllegalArgumentException e){
-            throw new CustomException("Role Does not exist !!","R456");
+        } catch (IllegalArgumentException e) {
+            throw new CustomException("Role Does not exist !! \nExample of a valid role" + Arrays.toString(FullTimeEstimationBreakUp.values()), "R456");
         }
 
     }
@@ -124,7 +123,7 @@ public class ExpenseEstimatorServiceImpl implements ExpenseEstimatorService {
 
     }
 
-    private double calculateTotalCostOfGa(GaEstimationBreakUp estimationBreakUp){
+    private double calculateTotalCostOfGa(GaEstimationBreakUp estimationBreakUp) {
 
         double totalCost = estimationBreakUp.getTuitionFee() +
                 estimationBreakUp.getCreditFee() +
@@ -135,11 +134,11 @@ public class ExpenseEstimatorServiceImpl implements ExpenseEstimatorService {
         return totalCost;
     }
 
-    private boolean validateSavingEmployeeRole(String role){
-        try{
+    private boolean validateSavingEmployeeRole(String role) {
+        try {
             EmployeeRole.valueOf(role);
             return true;
-        }catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }

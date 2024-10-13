@@ -1,13 +1,17 @@
 package com.fingrant.finance.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "ga_estimation_break_up")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GaEstimationBreakUpEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
