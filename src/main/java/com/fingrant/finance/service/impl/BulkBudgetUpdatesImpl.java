@@ -28,8 +28,6 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
 
     private final ApplicationContext context;
 
-    private SnsClient snsClient;
-
     private static String content = "This is the content of the file being uploaded to S3.";
 
     public BulkBudgetUpdatesImpl(ObjectFactory<S3Client> s3ClientFactory, ApplicationContext context) {
@@ -96,7 +94,7 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
 
             logger.info("sendSnsNotification() called with subject{} , and message {}", subject, message);
 
-                SnsClient snsClient = SnsClient.builder().build();
+                snsClient = SnsClient.builder().build();
                 String topicArn = "arn:aws:sns:us-east-1:851725245212:s3-file-qa-sns";
           return snsNotificationService(snsClient, topicArn, subject, message);
 

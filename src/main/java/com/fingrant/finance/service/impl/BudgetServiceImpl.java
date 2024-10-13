@@ -35,16 +35,17 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public Budget getBudgetById(Long id) {
-
         Optional<Budget> budget = budgetRepository.findById(id);
+        if (budget.isPresent()) {
             return budget.get();
+        }else{
+            throw new CustomException("No budget found","E101");
+        }
     }
 
     @Override
     public List<Budget> getAllBudgets() {
-
-        List<Budget> budgets = budgetRepository.findAll();
-        return budgets;
+        return budgetRepository.findAll();
     }
 
     @Override
