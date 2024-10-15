@@ -10,6 +10,16 @@ pipeline {
      }
 
     stages {
+
+        stage('Install Shared Library') {
+            steps {
+                sh "mvn install:install-file -Dfile=src/main/resources/sharedlibs/shared-lib-local-1.0.jar \
+                -DgroupId=com.shared \
+                -DartifactId=shared-lib-local \
+                -Dversion=1.0 \
+                -Dpackaging=jar"
+            }
+        }
         stage('Run Unit Tests'){
             steps{
                 sh 'mvn clean test -Djasypt.encryptor.password=$JASYPT_PWD -DDB_HOST=postgres'
