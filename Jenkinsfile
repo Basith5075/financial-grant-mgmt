@@ -37,8 +37,8 @@ pipeline {
 
                          sh '''
                          mvn clean verify sonar:sonar \
-                              -Dsonar.projectKey=financial-grant-mgmt \
-                              -Dsonar.projectName='financial-grant-mgmt' \
+                              -Dsonar.projectKey=fin-mgmt-local \
+                              -Dsonar.projectName='fin-mgmt-local' \
                               -Dsonar.host.url=http://host.docker.internal:9000 \
                               -Dsonar.token=$SONARQUBE_TOKEN \
                               -Djasypt.encryptor.password=$JASYPT_PWD \
