@@ -74,7 +74,7 @@ class BulkBudgetUpdatesImplTest {
     void uploadFileToS3Csv() {
 
        String result = bulkBudgetUpdates.uploadFileToS3Csv(bucketName, objectKey, region);
-       assertEquals(result, "successfully inserted the file !!");
+       assertEquals("successfully inserted the file !!", result);
 
     }
 
@@ -82,7 +82,7 @@ class BulkBudgetUpdatesImplTest {
     void uploadFileToS3CsvUSEast1() {
 
         String result = bulkBudgetUpdates.uploadFileToS3Csv(bucketName, objectKey, "US_EAST_1");
-        assertEquals(result, "successfully inserted the file !!");
+        assertEquals("successfully inserted the file !!", result);
 
     }
 
@@ -92,8 +92,8 @@ class BulkBudgetUpdatesImplTest {
         doThrow(new RuntimeException("S3 upload error")).when(s3Client).putObject(any(PutObjectRequest.class),  any(RequestBody.class));
         //then
         CustomException customException = assertThrows(CustomException.class, ()-> bulkBudgetUpdates.uploadFileToS3Csv(bucketName, objectKey, "US_EAST_1"));
-        assertEquals(customException.getMessage(), "Failed to upload file! ");
-        assertEquals(customException.getErrorCode(), "F101");
+        assertEquals("Failed to upload file! ", customException.getMessage());
+        assertEquals("F101", customException.getErrorCode());
         verify(s3Client,times(1)).putObject(any(PutObjectRequest.class),  any(RequestBody.class));
     }
 

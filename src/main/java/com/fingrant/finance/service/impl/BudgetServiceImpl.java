@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -39,7 +40,7 @@ public class BudgetServiceImpl implements BudgetService {
         if (budget.isPresent()) {
             return budget.get();
         }else{
-            throw new CustomException("No budget found","E101");
+            throw new NoSuchElementException("No budget found with id " + id);
         }
     }
 
@@ -55,7 +56,7 @@ public class BudgetServiceImpl implements BudgetService {
        if(budget != null) {
            return budget;
        }else{
-           throw new CustomException("Budget Not Present","E404");
+           throw new NoSuchElementException("No budget found with name " + name);
        }
     }
 
@@ -102,7 +103,7 @@ public class BudgetServiceImpl implements BudgetService {
 
            return budgetRepository.save(oldBudget);
         }else{
-            throw new CustomException("Budget Not Present","E404");
+            throw new NoSuchElementException("No budget found with id " + id);
         }
     }
 
@@ -115,7 +116,7 @@ public class BudgetServiceImpl implements BudgetService {
             budgetRepository.delete(budgetOptional.get());
             return true;
         }else{
-            throw new CustomException("Budget Not Present","E404");
+            throw new NoSuchElementException("No budget found with id " + id);
         }
 
     }

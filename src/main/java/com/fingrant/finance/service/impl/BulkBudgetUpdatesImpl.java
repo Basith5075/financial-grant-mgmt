@@ -25,14 +25,19 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
     private static final Logger logger = LogManager.getLogger(BulkBudgetUpdatesImpl.class);
 
     private final ObjectFactory<S3Client> s3ClientFactory ;
+    private final ObjectFactory<SnsClient> snsClientFactory ;
+
 
     private final ApplicationContext context;
 
     private static String content = "This is the content of the file being uploaded to S3.";
 
-    public BulkBudgetUpdatesImpl(ObjectFactory<S3Client> s3ClientFactory, ApplicationContext context) {
+    private SnsClient snsClient;
+
+    public BulkBudgetUpdatesImpl(ObjectFactory<S3Client> s3ClientFactory, ApplicationContext context, ObjectFactory<SnsClient> snsClientFactory) {
         this.s3ClientFactory = s3ClientFactory;
         this.context = context;
+        this.snsClientFactory = snsClientFactory;
     }
 
     @Override
@@ -94,7 +99,7 @@ public class BulkBudgetUpdatesImpl implements BulkBudgetUpdates {
 
             logger.info("sendSnsNotification() called with subject{} , and message {}", subject, message);
 
-                snsClient = SnsClient.builder().build();
+                snsClient = snsClientFactory.getObject();
                 String topicArn = "arn:aws:sns:us-east-1:851725245212:s3-file-qa-sns";
           return snsNotificationService(snsClient, topicArn, subject, message);
 

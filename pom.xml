@@ -157,6 +157,8 @@
 				<configuration>
 					<excludes>
 						<exclude>com/fingrant/finance/entity/*</exclude>
+						<exclude>com/fingrant/finance/FinanceMgmtGrantApplication.class</exclude>
+<!--						<exclude>com/fingrant/finance/exception/*</exclude>-->
 					</excludes>
 				</configuration>
 			</plugin>

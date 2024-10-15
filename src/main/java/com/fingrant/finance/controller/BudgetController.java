@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping("/budget")
+@RequestMapping("/v1/budget")
 public class BudgetController {
 
 
@@ -22,7 +22,6 @@ public class BudgetController {
 
     @PostMapping
     public Budget createBudget(@Valid @RequestBody Budget budget){
-
         return budgetService.createBudget(budget);
     }
 
@@ -30,6 +29,7 @@ public class BudgetController {
     public List<Budget> getAllBudgets(){
         return budgetService.getAllBudgets();
     }
+
     @GetMapping("/{id}")
     public Budget getBudgetById(@PathVariable Long id ){
 

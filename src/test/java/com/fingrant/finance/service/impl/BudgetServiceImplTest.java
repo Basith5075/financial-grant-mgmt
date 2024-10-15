@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,8 +35,7 @@ class BudgetServiceImplTest {
     @Mock
     private BudgetRepository budgetRepository;
 
-    Budget budget = new Budget();
-    Budget budget1 = new Budget();
+    Budget budget, budget1;
 
     List<Budget> budgetList = new ArrayList<>();
 
@@ -56,7 +56,7 @@ class BudgetServiceImplTest {
         budget.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse("2024-12-31"));
         budget.setGrantId(101L);
 
-
+        budget1 = new Budget();
         budget1.setId(2L);
         budget1.setName("Tech Innovation Grant 2025");
         budget1.setTotalAmount(new BigDecimal("120000.00"));
@@ -156,10 +156,9 @@ class BudgetServiceImplTest {
         Mockito.when(budgetRepository.findBudgetByName(budget.getName())).thenReturn(null);
 
         // then
-        CustomException customException = assertThrows(CustomException.class, () -> budgetService.getBudgetByName(budget.getName()));
+        NoSuchElementException noSuchElementException = assertThrows(NoSuchElementException.class, () -> budgetService.getBudgetByName(budget.getName()));
 
-        assertThat(customException.getErrorCode()).isEqualTo("E404");
-        assertThat(customException.getMessage()).isEqualTo("Budget Not Present");
+        assertThat(noSuchElementException.getMessage()).isEqualTo("No budget found with name " + budget.getName());
         verify(budgetRepository,times(1)).findBudgetByName(budget.getName());
     }
 //
@@ -189,9 +188,8 @@ class BudgetServiceImplTest {
 
         // then
 
-        CustomException customException = assertThrows(CustomException.class, () -> budgetService.deleteBudget(1L));
-        assertThat(customException.getErrorCode()).isEqualTo("E404");
-        assertThat(customException.getMessage()).isEqualTo("Budget Not Present");
+        NoSuchElementException noSuchElementException = assertThrows(NoSuchElementException.class, () -> budgetService.deleteBudget(1L));
+        assertThat(noSuchElementException.getMessage()).isEqualTo("No budget found with id 1");
         verify(budgetRepository,times(1)).findById(1L);
     }
 
@@ -228,10 +226,9 @@ class BudgetServiceImplTest {
 
         when(budgetRepository.findById(1L)).thenReturn(Optional.empty());
 
-        CustomException customException = assertThrows(CustomException.class, () -> budgetService.updateBudget(1L, updatedBudget));
+        NoSuchElementException noSuchElementException = assertThrows(NoSuchElementException.class, () -> budgetService.updateBudget(1L, updatedBudget));
 
-        assertThat(customException.getMessage()).isEqualTo("Budget Not Present");
-        assertThat(customException.getErrorCode()).isEqualTo("E404");
+        assertThat(noSuchElementException.getMessage()).isEqualTo("No budget found with id 1");
 
         verify(budgetRepository,times(1)).findById(1L);
     }
